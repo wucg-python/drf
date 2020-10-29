@@ -28,6 +28,20 @@ class TeacherDeSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=10,min_length=1)
     ke = serializers.CharField()
 
+    # 全局钩子
+    def validate(self, attrs):
+        print(attrs, 11111)
+        if attrs.get('name') == "王超":
+            return attrs
+        else:
+            raise ValueError('用户名不对')
+
+    # 局部钩子
+    def validate_name(self,name):
+        if name =="王超":
+            raise ValueError('又错了')
+
+
     def create(self, validated_data):
         return Teacher.objects.create(**validated_data)
 
